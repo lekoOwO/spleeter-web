@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link href="https://cdn.rawgit.com/TeaMeow/TocasUI/2.3.2/dist/tocas.css" rel='stylesheet'>
+    <title>Login | Leko Spleeter Web UI</title>
+    <style type="text/css">
+        .segment {
+            max-width: 300px;
+        }
+    </style>
+    <script>
+        const API_URL = "https://api.spleeter.example.domain"
+        document.addEventListener("keyup", function(event) {
+        // Number 13 is the "Enter" key on the keyboard
+            if (event.keyCode === 13) {
+                // Cancel the default action, if needed
+                event.preventDefault();
+                // Trigger the button element with a click
+                document.getElementById("login").click();
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", e => {
+            document.getElementById("login").addEventListener("click", e => {
+                e.preventDefault();
+                axios.get(`${API_URL}/seperate`, {
+                    auth: {
+                        username: document.getElementById("username").value,
+                        password: document.getElementById("password").value
+                    }, 
+                    validateStatus: function (status) {
+                        return status == 405;
+                    }
+                }).then(x => {
+                    localStorage.setItem("username", document.getElementById("username").value);
+                    localStorage.setItem("password", document.getElementById("password").value);
+                    location.href = "/"
+                }).catch(e => {
+                    document.getElementById("failed").style.display = "";
+                })
+
+            })
+        })
+    </script>
+</head>
+<body>
+    <!-- 主要容器 -->
+    <div class="ts narrow container">
+        <br>
+        <br>
+
+        <!-- 抬頭標題 -->
+        <h1 class="ts center aligned header">
+            登入
+            <div class="sub header">登入以使用 Spleeter Web UI</div>
+        </h1>
+        <!-- / 抬頭標題 -->
+        <div id="failed" style="display:none;">
+            <br>
+            <div class="ts centered inverted negative segment">
+                <p>登入失敗。</p>
+            </div>
+            <br>
+        </div>
+        
+        <!-- 主要登入片段 -->
+        <div class="ts centered secondary segment">
+            <!-- 表單 -->
+            <form class="ts form">
+                <!-- 帳號欄位 -->
+                <div class="field">
+                    <label>帳號</label>
+                    <input type="text" placeholder="" id="username">
+                </div>
+                <!-- / 帳號欄位 -->
+
+                <!-- 密碼欄位 -->
+                <div class="field">
+                    <label>密碼</label>
+                    <input type="password" placeholder="" id="password">
+                </div>
+                <!-- / 密碼欄位 -->
+
+                <!-- 登入按鈕 -->
+                <button type="button" class="ts positive fluid button" id="login">登入</button>
+                <!-- / 登入按鈕 -->
+            </form>
+            <!-- / 表單 -->
+        </div>
+        <!-- / 主要登入片段 -->
+    </div>
+    <!-- / 主要容器 -->
+</body>
+<footer>
+    <script src="https://cdn.rawgit.com/TeaMeow/TocasUI/2.3.2/dist/tocas.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+</footer>
+</html>

@@ -48,6 +48,7 @@ async function handleFile(e) {
     i.classList.add("download", "icon")
     a.appendChild(i);
 
+    document.getElementById("loader").innerText= "轉換中..."
     while(true) {
         const status = await instance.post(`${API_URL}/status`, {id}, 
             {
